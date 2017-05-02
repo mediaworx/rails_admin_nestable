@@ -6,6 +6,10 @@
           = check_box_tag 'rails_admin_nestable_live_update'
           = t('admin.actions.nestable.live_update')
   .form-group
+    .space_choser
+      %label
+        = select_tag 'spaces', options_from_collection_for_select(current_user.spaces, 'id', 'name'), prompt: 'Nur einen Bereich anzeigen'
+  .form-group
     #tree_nodes.dd{ data: { update_path: nestable_path(model_name: @abstract_model), max_depth: tree_max_depth } }
       %ol.dd-list
         = nested_tree_nodes @tree_nodes
