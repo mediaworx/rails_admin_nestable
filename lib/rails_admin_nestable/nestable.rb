@@ -69,11 +69,19 @@ module RailsAdmin
             if request.get?
               query = list_entries(@model_config, :nestable, false, false).reorder(nil)
 
+              if params['space_id'].present?
+                session[:selected_space_id] = params['space_id']
+              end
+
               case @options[:scope].class.to_s
                 when 'Proc'
                   query.merge!(@options[:scope].call)
                 when 'Symbol'
-                  query.merge!(@abstract_model.model.public_send(@options[:scope]))
+                  if session[:selected_space_id].present?
+                    query.merge!(@abstract_model.model.public_send(@options[:scope], session[:selected_space_id]))
+                  else
+                    query.merge!(@abstract_model.model.public_send(@options[:scope]))
+                  end
               end
 
               if @nestable_conf.tree?
@@ -88,7 +96,11 @@ module RailsAdmin
                 @tree_nodes = query.order("#{@options[:position_field]} ASC")
               end
 
-              render action: @action.template_name
+              if params['space_id'].present?
+                render action: @action.template_name, layout: false
+              else
+                render action: @action.template_name
+              end
             end
           end
         end

@@ -1,5 +1,5 @@
 jQuery ->
-  updateNodes = (tree_nodes) ->
+  updateNodes = (tree_nodes, space_id) ->
     serialized_tree = tree_nodes.nestable('serialize')
 
     $.ajax
@@ -7,6 +7,7 @@ jQuery ->
       type: 'POST',
       data:
         tree_nodes: serialized_tree
+        space_id: space_id
       success: (data) ->
         $flash = $('<div>')
           .addClass('nestable-flash alert alert-success')
@@ -19,6 +20,17 @@ jQuery ->
         $flash.fadeIn(200)
           .delay(2000).fadeOut 200, ->
             $(this).remove()
+
+  updateSpace = (space_id) ->
+    $.ajax
+      url: $tree_nodes.data('update-path'),
+      type: 'GET',
+      data:
+        space_id: space_id
+      success: (data) ->
+
+        $('#rails_admin_nestable')
+          .replaceWith(data)
 
   $tree_nodes = $('#tree_nodes')
   $tree_nodes_options = {}
@@ -44,3 +56,8 @@ jQuery ->
       change: (event) ->
         if live_update_mode
           updateNodes($tree_nodes)
+
+  $space_choser = $('#spaces')
+  $space_choser.on
+    change: (event) ->
+      updateSpace(event.target.value || '0')
