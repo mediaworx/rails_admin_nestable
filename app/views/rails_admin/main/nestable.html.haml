@@ -8,7 +8,7 @@
   .form-group
     .space_choser
       %label
-        = select_tag 'spaces', options_from_collection_for_select(current_user.spaces, 'id', 'name', session[:selected_space_id] || ''), prompt: 'Ohne Bereichsfilter'
+        = select_tag 'spaces', options_from_collection_for_select(current_user.visible_spaces, 'id', 'name', session[:selected_space_id] || ''), prompt: 'Ohne Bereichsfilter'
   .form-group
     #tree_nodes.dd{ data: { update_path: nestable_path(model_name: @abstract_model), max_depth: tree_max_depth } }
       %ol.dd-list
