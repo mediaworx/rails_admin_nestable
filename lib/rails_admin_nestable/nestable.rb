@@ -36,7 +36,7 @@ module RailsAdmin
                 model.parent = parent_node || nil
                 model.send("#{@position_field}=".to_sym, (key.to_i + 1)) if @position_field.present?
                 model.save!(validate: @enable_callback)
-                update_tree(value['children'], model) if value.has_key?('children')
+                update_tree(value['children'], model) if(value.has_key?('children') && !value['children'].nil?)
               end
             end
 
