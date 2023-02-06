@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rails_admin", ">= 0.6.6"
   s.add_dependency "haml-rails"
   s.add_dependency "coffee-rails"
-  s.add_dependency "sass-rails"
+  s.add_dependency "sassc-rails"
 end
